@@ -27,7 +27,11 @@ pip install -r requirements.txt
 ## Usage
 
 To run the NST algorithm, simply run ```python main.py```.
-
+<p align="center">
+<img src="data/src/content/autumn_road.jpg" style="height: 200px">
+<img src="data/src/style/waves.jpg" style="height: 200px">
+<img src="data/output/autumn_road_and_waves/both/autumn_road_and_waves_both.gif" style="height: 200px">
+</p>
 The parameter *init_method* can be used to initialize the output image in multiple ways. 
 - Setting it to 'content' initializes the output image to the content image. This setting produces the best results.
 - Setting it to 'noise' initializes the output image to random noise. This setting also produced some good results, but needed more tuning of loss weights.
