@@ -13,8 +13,8 @@ from keras.applications.vgg19 import preprocess_input
 from utils import deprocess_image, save_animation
 
 # Load images
-content_image_path = Path('data') / 'src' / 'autumn_road.jpg'
-style_image_path = Path('data') / 'src' / 'waves.jpg'
+content_image_path = Path('data') / 'src' / 'content' / 'autumn_road.jpg'
+style_image_path = Path('data') / 'src' / 'style' / 'waves.jpg'
 output_folder = Path('data') / 'output'
 
 original_width, original_height = keras.utils.load_img(content_image_path).size
@@ -70,8 +70,8 @@ def style_loss_fn(style_img, combined_img):
 
 # Parameters
 content_loss_weight = 1e-5
-style_loss_weight = 2.5e-1
-variance_loss_weight = 1e-5
+style_loss_weight = 2.5e-3
+variance_loss_weight = 1e-6
 
 init_methods = ['content', 'style', 'noise']
 reconstruction_types = ['content', 'style', 'both']
@@ -160,18 +160,18 @@ for epoch in range(epochs + 1):
         fname.parent.mkdir(parents=True, exist_ok=True)
         save_img(fname, combined_image)
 
-save_animation(output_folder, content_image_path, style_image, reconstruction_type)
+save_animation(output_folder, content_image_path, style_image_path, reconstruction_type)
 
 fig, ax = plt.subplots(2, 2, figsize=(10, 10))
 ax[0, 0].plot(np.log10(total_losses), '-.')
 ax[0, 0].set_title('Total loss')
-ax[0, 1].plot(np.log10(content_losses), '-.')
+ax[0, 1].plot(np.log10(content_losses[1:]), '-.')
 ax[0, 1].set_title('Content Loss')
 ax[1, 0].plot(np.log10(style_losses), '-.')
 ax[1, 0].set_title('Style Loss')
 ax[1, 1].plot(np.log10(variance_losses), '-.')
 ax[1, 1].set_title('Total variance loss')
 
-fig.title('Training losses')
+fig.suptitle('Training losses', fontsize=15)
 
 fig.savefig(output_folder / f"{content_image_path.stem}_and_{style_image_path.stem}" / reconstruction_type / 'training_losses.png')
